@@ -2,6 +2,7 @@ const express = require('express');
 const { MongoClient } = require('mongodb');
 const { setUsersCollection } = require('./Database/User');
 const {setWebsitesCollection } = require('./Database/Websites')
+const {setSessionCollection} = require('./Database/Session')
 const app = express();
 const port = 3000;
 const cors = require('cors');
@@ -10,6 +11,7 @@ const databaseUrl = 'mongodb+srv://aravindroy1709:2Z5GZej0oAJaOnFr@kukku-cluster
 const client = new MongoClient(databaseUrl);
 const userRoutes = require('./Routes/userRoutes')
 const websiteRoutes = require('./Routes/websiteRoutes')
+const sessionRoutes = require('./Routes/sessionRoutes')
 
 app.use(cors()); 
 app.use(bodyParser.json());
@@ -21,7 +23,7 @@ async function main() {
     
     setUsersCollection(client);
     setWebsitesCollection(client);
-    
+    setSessionCollection(client);
     app.listen(port, () => {
       console.log(`Server running on port ${port}`);
     });
@@ -33,7 +35,7 @@ async function main() {
 
 app.use('/users' , userRoutes)
 app.use('/websites' , websiteRoutes)
-
+app.use('/session' , sessionRoutes)
 main();
 
 
